@@ -203,3 +203,4 @@ README.html
 src/main/resources/application.properties
 .env
 resquests.http
+data.sql

@@ -14,7 +14,8 @@ public class Tweet {
     @Column(name = "tweet_Id")
     private Long tweetId;
 
-    @OneToOne(mappedBy = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
         
     private String content;
