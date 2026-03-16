@@ -1,6 +1,7 @@
 package com.victor.security2.controller;
 
 import com.victor.security2.dto.CreateTweetDto;
+import com.victor.security2.entities.Role;
 import com.victor.security2.entities.Tweet;
 import com.victor.security2.repository.TweetRepository;
 import com.victor.security2.repository.UserRepository;
@@ -43,7 +44,12 @@ public class TweetController {
         var tweet = tweetRepository.findAllByTweetId(tweetId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (!tweet.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
+        var user = userRepository.findById(UUID.fromString(token.getName()));
+        var isAdmin = user.get().getRoles()
+                .stream()
+                .anyMatch(role -> role.getName().equalsIgnoreCase(Role.Values.ADMIN.name()));
+
+        if (isAdmin || !tweet.getUser().getUserId().equals(UUID.fromString(token.getName()))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         tweetRepository.deleteById(tweetId);
