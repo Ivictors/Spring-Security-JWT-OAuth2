@@ -206,5 +206,3 @@ resquests.http
 src/main/resources/data.sql
 private_key.pem
 public_key.pem
-security2/security2
-workspace/security2/folder.yml
