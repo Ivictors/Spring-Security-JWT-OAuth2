@@ -202,7 +202,6 @@ README.html
 # Ignorar configurações sensíveis
 src/main/resources/application.properties
 .env
-resquests.http
 src/main/resources/data.sql
 private_key.pem
 public_key.pem
