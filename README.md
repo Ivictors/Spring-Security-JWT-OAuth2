@@ -19,6 +19,13 @@ A aplicação utiliza o fluxo OAuth2 (Resource Server) para gerenciar a autentic
 
 A API adota uma arquitetura **Stateless** (sem estado) configurada no `SecurityConfig`. A autenticação é delegada ao token JWT enviado pelo cliente.
 
+O projeto segue o padrão de camadas para garantir a separação de responsabilidades e facilidade de manutenção:
+
+* **Camada de Controller**: Responsável por expor os endpoints e gerenciar as requisições/respostas HTTP.
+* **Camada de Service**: Contém a lógica de negócio, como validação de permissões, hashing de senhas e regras de exclusão de dados.
+* **Camada de Repository**: Interfaces que utilizam Spring Data JPA para comunicação com o banco de dados.
+* **Camada de Entities**: Modelagem dos dados utilizando JPA (User, Role, Tweet).
+
 ### Criptografia Assimétrica (RSA)
 O sistema utiliza um par de chaves (Pública/Privada) injetadas via propriedades do sistema (`jwt.privatekey` e `jwt.publickey`):
 * **Chave Privada**: Utilizada pelo `JwtEncoder` para assinar o token JWT gerado durante o login.
@@ -63,12 +70,12 @@ Para executar este projeto localmente, você precisará gerar um par de chaves R
 ```properties
 jwt.publickey=classpath:app.pub
 jwt.privatekey=classpath:app.key
+````
 
-1. Gerar a Chave Privada
+### 1. Gerar a Chave Privada
 Este comando deve ser inserido no terminal e cria uma chave privada RSA de 2048 bits.
 openssl genrsa -out app.key 2048
 
-2. Extrair a Chave Pública
+### 2. Extrair a Chave Pública
 A partir da chave privada gerada, extraímos a chave pública correspondente.
 openssl rsa -in app.key -pubout -out app.pub
-```
